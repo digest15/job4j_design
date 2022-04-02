@@ -21,13 +21,13 @@ public class AppTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite( AppTest.class );
+        return new TestSuite(AppTest.class);
     }
 
     /**
      * Rigourous Test :-)
      */
     public void testApp() {
-        assertTrue( true );
+        assertTrue(true);
     }
 }
