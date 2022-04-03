@@ -5,6 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Generics {
+
+    /**
+     * Строки метода вызывающие ошибки:
+     *
+     * gen.printBoundedWildCard(first);
+     * gen.printLowerBoundedWildCard(third);
+     */
     public static void main(String[] args) {
         Generics gen = new Generics();
         List<Animal> first = new ArrayList<>();
@@ -19,14 +26,12 @@ public class Generics {
         gen.printObject(third);
         System.out.println();
 
-        //gen.printBoundedWildCard(first);
         gen.printBoundedWildCard(second);
         gen.printBoundedWildCard(third);
         System.out.println();
 
         gen.printLowerBoundedWildCard(first);
         gen.printLowerBoundedWildCard(second);
-        //gen.printLowerBoundedWildCard(third);
     }
 
     public void printObject(List<?> list) {
