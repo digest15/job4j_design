@@ -1,13 +1,12 @@
 package ru.job4j.list;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class SimpleArrayList<E> implements List<E> {
 
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    private E[] container;
+    private Object[] container;
 
     private int size;
 
@@ -26,8 +25,7 @@ public class SimpleArrayList<E> implements List<E> {
             throw new IllegalArgumentException(String.format("Illegal capacity: %s", capacity));
         }
 
-        @SuppressWarnings("unchecked") E[] array = (E[]) new Object[capacity];
-        this.container = array;
+        this.container = new Object[capacity];
 
         this.size = 0;
         this.modCount = 0;
@@ -81,14 +79,10 @@ public class SimpleArrayList<E> implements List<E> {
         modCount++;
 
         @SuppressWarnings("unchecked") E value = (E) container[index];
-
-        int newSize = size - 1;
-        if (newSize > index) {
-            System.arraycopy(container, index + 1, container, index, newSize - 1);
+        if ((--size) > index) {
+            System.arraycopy(container, index + 1, container, index, size - 1);
         }
-        container[newSize] = null;
-        size = newSize;
-
+        container[size] = null;
         return value;
     }
 
@@ -99,10 +93,11 @@ public class SimpleArrayList<E> implements List<E> {
      * @return the element at the specified position in this container
      * @throws IndexOutOfBoundsException if wrong index, 0 < index > (size() - 1)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public E get(int index) {
         Objects.checkIndex(index, container.length);
-        return container[index];
+        return (E) container[index];
     }
 
     /**
@@ -129,8 +124,16 @@ public class SimpleArrayList<E> implements List<E> {
             private final int expectedModCount = modCount;
             private int cursor = 0;
 
+            /**
+             * {@inheritDoc}
+             *
+             * @throws ConcurrentModificationException for <a href="#fail-fast"><i>fail-fast</i></a>.
+             */
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return cursor < size;
             }
 
@@ -141,10 +144,7 @@ public class SimpleArrayList<E> implements List<E> {
              */
             @Override
             public E next() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                if (cursor >= size) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
 
@@ -157,7 +157,7 @@ public class SimpleArrayList<E> implements List<E> {
     }
 
     private void grow() {
-        int newCapacity = capacity * 2;
+        int newCapacity = capacity * 2 + 1;
         container = Arrays.copyOf(container, newCapacity);
         capacity = newCapacity;
     }
