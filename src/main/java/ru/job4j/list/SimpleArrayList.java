@@ -6,7 +6,7 @@ public class SimpleArrayList<E> implements List<E> {
 
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    private Object[] container;
+    private E[] container;
 
     private int size;
 
@@ -20,13 +20,13 @@ public class SimpleArrayList<E> implements List<E> {
      * @param  capacity the initial capacity of the list
      * @throws IllegalArgumentException if the specified size is negative or more Integer.MAX_VALUE - 8
      */
+    @SuppressWarnings("unchecked")
     public SimpleArrayList(int capacity) {
         if (capacity < 0 | capacity > MAX_ARRAY_SIZE) {
             throw new IllegalArgumentException(String.format("Illegal capacity: %s", capacity));
         }
 
-        this.container = new Object[capacity];
-
+        this.container = (E[]) new Object[capacity];
         this.size = 0;
         this.modCount = 0;
         this.capacity = capacity;
@@ -58,10 +58,10 @@ public class SimpleArrayList<E> implements List<E> {
      */
     @Override
     public E set(int index, E newValue) {
-        Objects.checkIndex(index, container.length);
+        Objects.checkIndex(index, size);
         modCount++;
 
-        @SuppressWarnings("unchecked") E oldValue = (E) container[index];
+        E oldValue = container[index];
         container[index] = newValue;
         return oldValue;
     }
@@ -75,10 +75,10 @@ public class SimpleArrayList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
-        Objects.checkIndex(index, container.length);
+        Objects.checkIndex(index, size);
         modCount++;
 
-        @SuppressWarnings("unchecked") E value = (E) container[index];
+        E value = container[index];
         if ((--size) > index) {
             System.arraycopy(container, index + 1, container, index, size - 1);
         }
@@ -93,11 +93,10 @@ public class SimpleArrayList<E> implements List<E> {
      * @return the element at the specified position in this container
      * @throws IndexOutOfBoundsException if wrong index, 0 < index > (size() - 1)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public E get(int index) {
-        Objects.checkIndex(index, container.length);
-        return (E) container[index];
+        Objects.checkIndex(index, size);
+        return container[index];
     }
 
     /**
@@ -147,10 +146,7 @@ public class SimpleArrayList<E> implements List<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-
-                @SuppressWarnings("unchecked")
-                E value = (E) container[cursor++];
-                return value;
+                return container[cursor++];
             }
 
         };
