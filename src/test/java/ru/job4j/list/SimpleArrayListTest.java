@@ -47,6 +47,13 @@ public class SimpleArrayListTest {
         list.remove(5);
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void whenRemoveByIncorrectIndexWhenCapacityWiderThanSizeThenGetException() {
+        list.remove(2);
+        list.remove(1);
+        list.get(2);
+    }
+
     @Test
     public void whenRemoveThenMustNotBeEmpty() {
         list.remove(1);
