@@ -18,11 +18,7 @@ public class SimpleLinkedList<E> implements List<E> {
     /**
      * Constructs an empty linked list.
      */
-    public SimpleLinkedList() {
-        this.size = 0;
-        this.modCount = 0;
-        this.head = null;
-    }
+    public SimpleLinkedList() { }
 
     /**
      * Appends the specified element to the end of this list
