@@ -25,10 +25,7 @@ public class SimpleArrayList<E> implements List<E> {
         if (capacity < 0 | capacity > MAX_ARRAY_SIZE) {
             throw new IllegalArgumentException(String.format("Illegal capacity: %s", capacity));
         }
-
         this.container = (E[]) new Object[capacity];
-        this.size = 0;
-        this.modCount = 0;
         this.capacity = capacity;
     }
 
