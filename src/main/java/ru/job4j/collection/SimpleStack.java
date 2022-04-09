@@ -12,9 +12,12 @@ public class SimpleStack<T> {
      * @throws NoSuchElementException if stack is empty
      */
     public T pop() {
-        return list.deleteFirst();
+        try {
+            return list.deleteFirst();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Stack is empty");
+        }
     }
-
 
     /**
      * Adds an element to the top.

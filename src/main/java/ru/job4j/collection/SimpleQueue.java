@@ -4,7 +4,11 @@ import java.util.NoSuchElementException;
 
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
+
     private final SimpleStack<T> out = new SimpleStack<>();
+
+    private int sizeIn = 0;
+    private int sizeOut = 0;
 
     /**
      * Removes the fist element from this queue.
@@ -13,13 +17,12 @@ public class SimpleQueue<T> {
      * @throws NoSuchElementException if queue is empty
      */
     public T poll() {
-        try {
-            while (true) {
-                out.push(in.pop());
-            }
-        } catch (NoSuchElementException e) {
-
+        for (int i = 0; i < sizeIn; i++) {
+            out.push(in.pop());
+            sizeOut++;
         }
+        sizeIn = 0;
+        sizeOut--;
         return out.pop();
     }
 
@@ -28,13 +31,12 @@ public class SimpleQueue<T> {
      *
      */
     public void push(T value) {
-        try {
-            while (true) {
-                in.push(out.pop());
-            }
-        } catch (NoSuchElementException e) {
-
+        for (int i = 0; i < sizeOut; i++) {
+            in.push(out.pop());
+            sizeIn++;
         }
+        sizeOut = 0;
         in.push(value);
+        sizeIn++;
     }
 }
