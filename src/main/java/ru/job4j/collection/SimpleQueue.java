@@ -17,6 +17,9 @@ public class SimpleQueue<T> {
      * @throws NoSuchElementException if queue is empty
      */
     public T poll() {
+        if (sizeIn == 0) {
+            throw new NoSuchElementException("Queue is empty");
+        }
         if (sizeOut == 0) {
             for (int i = 0; i < sizeIn; i++) {
                 out.push(in.pop());
