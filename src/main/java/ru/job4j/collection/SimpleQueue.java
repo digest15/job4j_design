@@ -17,11 +17,14 @@ public class SimpleQueue<T> {
      * @throws NoSuchElementException if queue is empty
      */
     public T poll() {
-        for (int i = 0; i < sizeIn; i++) {
-            out.push(in.pop());
-            sizeOut++;
+        if (sizeOut == 0) {
+            for (int i = 0; i < sizeIn; i++) {
+                out.push(in.pop());
+                sizeOut++;
+            }
+            sizeIn = 0;
         }
-        sizeIn = 0;
+
         sizeOut--;
         return out.pop();
     }
@@ -31,11 +34,6 @@ public class SimpleQueue<T> {
      *
      */
     public void push(T value) {
-        for (int i = 0; i < sizeOut; i++) {
-            in.push(out.pop());
-            sizeIn++;
-        }
-        sizeOut = 0;
         in.push(value);
         sizeIn++;
     }
