@@ -20,6 +20,28 @@ public class ForwardLinked<T> implements Iterable<T> {
     }
 
     /**
+     * Revert this list.
+     *
+     * * @return <code>true</code> if the revert is done. <code>false</code> if list is empty or have one element
+     */
+    public boolean revert() {
+        boolean rsl = false;
+        if (head != null && head.next != null) {
+            Node<T> prev = null;
+            Node<T> curr = head;
+            while (curr != null) {
+                Node<T> next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+            head = prev;
+            rsl = true;
+        }
+        return rsl;
+    }
+
+    /**
      * Adds an element to head this list.
      *
      */
