@@ -7,7 +7,7 @@ public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
 
     public void add(T value) {
-        Node<T> node = new Node<T>(value, null);
+        Node<T> node = new Node<>(value, null);
         if (head == null) {
             head = node;
             return;
@@ -25,8 +25,8 @@ public class ForwardLinked<T> implements Iterable<T> {
      * * @return <code>true</code> if the revert is done. <code>false</code> if list is empty or have one element
      */
     public boolean revert() {
-        boolean rsl = false;
-        if (head != null && head.next != null) {
+        boolean notEmpty = (head != null && head.next != null);
+        if (notEmpty) {
             Node<T> prev = null;
             Node<T> curr = head;
             while (curr != null) {
@@ -36,9 +36,8 @@ public class ForwardLinked<T> implements Iterable<T> {
                 curr = next;
             }
             head = prev;
-            rsl = true;
         }
-        return rsl;
+        return notEmpty;
     }
 
     /**
@@ -71,7 +70,7 @@ public class ForwardLinked<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             Node<T> node = head;
 
             @Override
