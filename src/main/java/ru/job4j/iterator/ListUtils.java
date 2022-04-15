@@ -37,9 +37,8 @@ public class ListUtils {
      * @throws IndexOutOfBoundsException if 0 > index > list.size()
      */
     public static <T> void addAfter(List<T> list, int index, T value) {
-        Objects.checkIndex(index, list.size());
-        ListIterator<T> iterator = list.listIterator(index);
-        iterator.next();
+        Objects.checkIndex(index, list.size() + 1);
+        ListIterator<T> iterator = list.listIterator(index + 1);
         iterator.add(value);
     }
 
