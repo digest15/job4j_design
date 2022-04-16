@@ -5,7 +5,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppWithNewHasCode {
+public class AppWithNewHasCodeAndEquals {
     public static void main(String[] args) {
         User user1 = new User("Bob", 0, new GregorianCalendar(1995, Calendar.APRIL, 1));
         User user2 = new User("Bob", 0, new GregorianCalendar(1995, Calendar.APRIL, 1));

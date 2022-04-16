@@ -13,4 +13,11 @@ public class UserModelTest {
         User user2 = new User("Bob", 0, new GregorianCalendar(1995, Calendar.APRIL, 1));
         assertEquals(user1.hashCode(), user2.hashCode());
     }
+
+    @Test
+    public void equalsMustBeTrue() {
+        User user1 = new User("Bob", 0, new GregorianCalendar(1995, Calendar.APRIL, 1));
+        User user2 = new User("Bob", 0, new GregorianCalendar(1995, Calendar.APRIL, 1));
+        assertTrue(user1.equals(user2));
+    }
 }

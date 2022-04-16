@@ -24,7 +24,10 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (!(obj instanceof User)) {
+            return false;
+        }
+        return name.equals(((User) obj).name) && birthday.equals(((User) obj).birthday) && children == ((User) obj).children;
     }
 
     public String getName() {
