@@ -13,6 +13,20 @@ public class User {
         this.birthday = birthday;
     }
 
+    @Override
+    public int hashCode() {
+        int rsl = 17;
+        rsl = 31 * rsl + name.hashCode();
+        rsl = 31 * rsl + children;
+        rsl = 31 * rsl + birthday.hashCode();
+        return rsl;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public String getName() {
         return name;
     }
