@@ -59,7 +59,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int i = indexFor(hash);
         boolean isChange = (table[i] == null);
         if (isChange) {
-            table[i] = new MapEntry<>(key, value,  hash);
+            table[i] = new MapEntry<>(key, value);
         }
         return isChange;
     }
@@ -72,14 +72,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private MapEntry<K, V> getEntry(int hash, K key) {
         MapEntry<K, V> entry = table[indexFor(hash)];
-        return (entry == null || (entry.key != key && !(entry.hash == hash && entry.key.equals(key)))) ? null : entry;
+        return (entry == null || (entry.key != key && !(hash(entry.key) == hash && entry.key.equals(key)))) ? null : entry;
     }
 
     @Override
     public boolean remove(K key) {
         MapEntry<K, V> entry = getEntry(hash(key), key);
         if (entry != null) {
-            int i = indexFor(entry.hash);
+            int i = indexFor(hash(entry.key));
             table[i] = null;
             entry.key = null;
             entry.value = null;
@@ -129,12 +129,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
     private static class MapEntry<K, V> {
         K key;
         V value;
-        int hash;
 
-        public MapEntry(K key, V value, int hash) {
+        public MapEntry(K key, V value) {
             this.key = key;
             this.value = value;
-            this.hash = hash;
         }
 
     }
