@@ -31,8 +31,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(K key) {
-        int hash;
-        return (key == null) ? 0 : (hash = key.hashCode()) ^ (hash >>> 16);
+        int hash = 0;
+        if (key != null) {
+            int hashCode = key.hashCode();
+            hash = hashCode ^ (hashCode >>> 16);
+        }
+        return hash;
     }
 
     private int indexFor(int hash) {
@@ -88,7 +92,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
+        return new Iterator<>() {
 
             private final int expectedModCount = modCount;
             private int cursor = 0;
