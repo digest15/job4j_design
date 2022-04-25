@@ -102,17 +102,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return nextIndex() > 0;
-            }
-
-            private int nextIndex() {
-                int i;
-                for (i = cursor; i < capacity; i++) {
-                    if (table[i] != null) {
-                        break;
-                    }
+                while (cursor < capacity && table[cursor] == null) {
+                    cursor++;
                 }
-                return i == capacity ? -1 : i;
+                return cursor < capacity;
             }
 
             @Override
@@ -120,8 +113,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                cursor = nextIndex() + 1;
-                return table[cursor - 1].key;
+                return table[cursor++].key;
             }
         };
     }
