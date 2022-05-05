@@ -12,8 +12,9 @@ public class Analize {
         int deleted = 0;
         int changed = 0;
         for (User u : previous) {
-            deleted += (!currMap.containsKey(u.getId()) ? 1 : 0);
-            changed += (currMap.containsKey(u.getId()) && !u.getName().equals(currMap.get(u.getId()).getName()) ? 1 : 0);
+            boolean isPresent = currMap.containsKey(u.getId());
+            deleted += (!isPresent ? 1 : 0);
+            changed += (isPresent && !u.getName().equals(currMap.get(u.getId()).getName()) ? 1 : 0);
         }
         int added = current.size() + deleted - previous.size();
         return new Info(added, changed,  deleted);
