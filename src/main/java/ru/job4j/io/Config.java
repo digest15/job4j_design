@@ -3,10 +3,11 @@ package ru.job4j.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.*;
 
 public class Config {
     private final String path;
@@ -19,8 +20,8 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             values = read.lines()
-                    .filter(str -> !str.isEmpty())
-                    .filter(str -> !str.startsWith("#"))
+                    .filter(not(String::isEmpty))
+                    .filter(not(this::isComment))
                     .filter(this::isCorrectPropertyEntry)
                     .collect(Collectors.toMap(
                             str -> str.substring(0, str.indexOf('=')),
@@ -54,10 +55,13 @@ public class Config {
     }
 
     private boolean isCorrectPropertyEntry(String entry) throws IllegalArgumentException {
-        if (entry.matches(".+=.+")) {
-            return true;
-        } else {
+        if (!entry.matches(".+=.+")) {
             throw new IllegalArgumentException(String.format("%s -> %s", path, entry));
         }
+        return true;
+    }
+
+    private boolean isComment(String entry) {
+        return entry.startsWith("#");
     }
 }
