@@ -28,7 +28,7 @@ public class Config {
                             str -> str.substring(str.indexOf('=') + 1, str.length())
                     ));
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            e.printStackTrace();
         }
     }
 
