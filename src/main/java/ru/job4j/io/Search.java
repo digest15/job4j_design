@@ -30,10 +30,8 @@ public class Search {
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            if (!attrs.isDirectory()) {
-                if (condition.test(file)) {
-                    paths.add(file);
-                }
+            if (condition.test(file)) {
+                paths.add(file);
             }
             return FileVisitResult.CONTINUE;
         }
