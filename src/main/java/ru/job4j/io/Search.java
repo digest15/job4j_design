@@ -9,9 +9,8 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        if (args.length != 2) {
-            throw new IllegalArgumentException("You must get two parameters. First: root folder. Second: file extension. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION.");
-        }
+        validateParameters(args);
+
         String rootFolder = args[0];
         String extension = args[1];
 
@@ -44,6 +43,22 @@ public class Search {
 
         public List<Path> getPaths() {
             return paths;
+        }
+    }
+
+    private static void validateParameters(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("You must get two parameters. First: root folder. Second: file extension. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION.");
+        }
+        String rootFolder = args[0];
+        String extension = args[1];
+
+        if (!extension.startsWith(".")) {
+            throw new IllegalArgumentException(String.format("Extension must start with \".\". value: %s", extension));
+        }
+        Path start = Paths.get(rootFolder);
+        if (!Files.exists(start)) {
+            throw new IllegalArgumentException(String.format("Not exist %s", start.toAbsolutePath()));
         }
     }
 }
