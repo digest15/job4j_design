@@ -1,6 +1,5 @@
 package ru.job4j.io;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,14 +16,9 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String param : args) {
-            if (!param.startsWith("-")) {
-                throw new IllegalArgumentException(String.format("Parameter must start with \"-\" parameter: %s", param));
-            }
+            valiate(param);
 
             int pos = param.indexOf("=");
-            if (pos == -1 || pos == 1 || pos == param.length() - 1) {
-                throw new IllegalArgumentException(String.format("Bad parameter: %s", param));
-            }
             String key = param.substring(1, pos);
             String value = param.substring(pos + 1, param.length());
             values.put(key, value);
@@ -32,6 +26,10 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
+        if (args == null || args.length == 0) {
+            throw new IllegalArgumentException("You must put some parameters. Usage java -jar NAME.jar -KEY=VALUE");
+        }
+
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
@@ -43,5 +41,16 @@ public class ArgsName {
 
         ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
         System.out.println(zip.get("out"));
+    }
+
+    private void valiate(String param) {
+        if (!param.startsWith("-")) {
+            throw new IllegalArgumentException(String.format("Parameter must start with \"-\" parameter: %s", param));
+        }
+
+        int pos = param.indexOf("=");
+        if (pos == -1 || pos == 1 || pos == param.length() - 1) {
+            throw new IllegalArgumentException(String.format("Bad parameter: %s", param));
+        }
     }
 }

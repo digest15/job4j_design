@@ -50,7 +50,7 @@ public class ArgsNameTest {
         ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "Xmx:512"});
     }
 
-    @Test()
+    @Test(expected = IllegalArgumentException.class)
     public void whenArgsIsEmpty() {
         ArgsName args = ArgsName.of(new String[] {});
     }
