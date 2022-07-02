@@ -6,6 +6,14 @@ import java.util.Map;
 public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
+    public static void main(String[] args) {
+        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
+        System.out.println(jvm.get("Xmx"));
+
+        ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
+        System.out.println(zip.get("out"));
+    }
+
     public String get(String key) {
         String value = values.get(key);
         if (value == null) {
@@ -26,21 +34,13 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
-        if (args == null || args.length == 0) {
+        if (args.length == 0) {
             throw new IllegalArgumentException("You must put some parameters. Usage java -jar NAME.jar -KEY=VALUE");
         }
 
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
-    }
-
-    public static void main(String[] args) {
-        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
-        System.out.println(jvm.get("Xmx"));
-
-        ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
-        System.out.println(zip.get("out"));
     }
 
     private void valiate(String param) {
