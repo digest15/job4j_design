@@ -5,16 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
-    public void packFiles(List<File> sources, File target) {
+    public void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            sources.forEach(file -> {
-                try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file))) {
-                    zip.putNextEntry(new ZipEntry(file.getPath()));
+            sources.forEach(path -> {
+                String pathStr = path.toString();
+                try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(pathStr))) {
+                    zip.putNextEntry(new ZipEntry(pathStr));
                     zip.write(in.readAllBytes());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -44,13 +44,10 @@ public class Zip {
         File target = new File(jvm.get("o"));
         String extention = jvm.get("e");
 
-        List<File> sourses = Search.search(source.toPath(), p -> !p.toString().endsWith(extention))
-                .stream()
-                .map(Path::toFile)
-                .collect(Collectors.toList());
+        List<Path> sourses = Search.search(source.toPath(), p -> !p.toString().endsWith(extention));
 
-        Zip ziper = new Zip();
-        ziper.packFiles(sourses, target);
+        Zip zipper = new Zip();
+        zipper.packFiles(sourses, target);
     }
 
     private static void validate(ArgsName args) {
