@@ -10,9 +10,9 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
-    public static final String USER_NAME = "Пользователь";
-    public static final String BOT_NAME = "Чат-бот";
-    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    private static final String USER_NAME = "Пользователь";
+    private static final String BOT_NAME = "Чат-бот";
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final String logPath;
     private final String botAnswersPath;
     private Random random;
@@ -20,15 +20,15 @@ public class ConsoleChat {
     private boolean isStop = false;
     private List<String> botAnswers;
 
-    public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("./data/chat/log.txt", "./data/chat/phrases.txt");
-        cc.run();
-    }
-
     public ConsoleChat(String logPath, String botAnswersPath) {
         validate(logPath, botAnswersPath);
         this.logPath = logPath;
         this.botAnswersPath = botAnswersPath;
+    }
+
+    public static void main(String[] args) {
+        ConsoleChat cc = new ConsoleChat("./data/chat/log.txt", "./data/chat/phrases.txt");
+        cc.run();
     }
 
     public void run() {
@@ -63,7 +63,7 @@ public class ConsoleChat {
     private void printInstruction() {
         System.out.println("============================================");
         System.out.println(String.format("Введите \"%s\" для выключения бота", STOP));
-        System.out.println(String.format("Введите \"%s\" для включения бота", STOP));
+        System.out.println(String.format("Введите \"%s\" для включения бота", CONTINUE));
         System.out.println(String.format("Введите \"%s\" для завершения чата", OUT));
         System.out.println("============================================");
     }
