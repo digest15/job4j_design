@@ -57,7 +57,7 @@ public class CSVReader {
             throw new IllegalArgumentException(String.format("Uncorrected file path: %s", path), e);
         }
 
-        if (!output.equals(STD_OUT)) {
+        if (!STD_OUT.equals(output)) {
             try {
                 Paths.get(output);
             } catch (InvalidPathException e) {
@@ -68,7 +68,7 @@ public class CSVReader {
 
     private static OutputStream builtOutputStream(ArgsName args) throws FileNotFoundException {
         String path = args.get(OUT);
-        if (path.equals(STD_OUT)) {
+        if (STD_OUT.equals(path)) {
             return System.out;
         } else {
             return new FileOutputStream(path);
