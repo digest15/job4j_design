@@ -1,8 +1,10 @@
 package ru.job4j.io;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -18,7 +20,9 @@ public class EchoServer {
     private static final String PROTOCOL_NAME = "HTTP";
     private static final String BAY = "BAY";
 
-    public static void main(String[] args) throws IOException {
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!server.isClosed()) {
                 Socket socket = server.accept();
@@ -52,6 +56,8 @@ public class EchoServer {
                     out.flush();
                 }
             }
+        } catch (Exception e) {
+            LOG.error("ServerSocket error", e);
         }
     }
 
