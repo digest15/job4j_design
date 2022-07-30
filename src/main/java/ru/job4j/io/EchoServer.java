@@ -15,7 +15,8 @@ public class EchoServer {
     private static final String MSG = "msg";
     private static final String HELLO = "HELLO";
     private static final String EXIT = "EXIT";
-    public static final String PROTOCOL_NAME = "HTTP";
+    private static final String PROTOCOL_NAME = "HTTP";
+    private static final String BAY = "BAY";
 
     public static void main(String[] args) throws IOException {
         try (ServerSocket server = new ServerSocket(9000)) {
@@ -41,6 +42,7 @@ public class EchoServer {
                                 result = "Hello, dear friend.\n";
                                 break;
                             case EXIT:
+                            case BAY:
                                 server.close();
                             default:
                                 result = "What are say?\n";
