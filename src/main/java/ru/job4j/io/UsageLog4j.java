@@ -23,5 +23,11 @@ public class UsageLog4j {
         boolean o = true;
         LOG.debug("Primitive variable value: byte {}, short {}, char {}, int {}, long {}, float {}, double {}, boolean {}",
                 b, s, c, i, l, f, d, o);
+
+        try {
+            throw new IllegalStateException("Example error");
+        } catch (Exception e) {
+            LOG.error("Usage Log4j error", e);
+        }
     }
 }
