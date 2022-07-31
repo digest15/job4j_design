@@ -1,16 +1,24 @@
 package ru.job4j.serialization;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import javax.xml.bind.annotation.*;
 import java.util.Arrays;
 
+@XmlRootElement(name = "task")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Task {
+
     private String description;
+    @XmlAttribute
     private Integer estimation;
     private Person worker;
+    @XmlAttribute
     private Boolean completed;
+    @XmlElementWrapper(name = "observers")
+    @XmlElement(name = "person")
     private Person[] observers;
+
+    public Task() {
+    }
 
     public Task(String description, Integer estimation, Person worker, Boolean completed, Person[] observers) {
         this.description = description;
