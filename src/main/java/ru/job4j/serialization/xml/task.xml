@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task estimation="30" completed="false">
+    <description>Создать описание класса в формате json</description>
+    <worker name="Вася Пупкин"/>
+    <observers>
+        <person name="Петр Арсеньтев"/>
+        <person name="Есипов Алексей"/>
+    </observers>
+</task>
