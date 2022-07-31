@@ -1,4 +1,4 @@
-package ru.job4j.serialization.json;
+package ru.job4j.serialization;
 
 public class Person {
     private String name;
