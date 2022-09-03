@@ -62,7 +62,11 @@ public class FileLogFileFinder {
         MASK() {
             @Override
             Predicate<Path> getFilter(String pattern) {
-                String mask = pattern.replace("*", ".*");
+                pattern = pattern
+                        .replaceAll("\\.", "\\\\.")
+                        .replaceAll("\\*", ".*")
+                        .replaceAll("\\?", ".?");
+                String mask = ".*" + pattern + ".*";
                 return path -> path.toFile().getName().matches(mask);
             }
         },
