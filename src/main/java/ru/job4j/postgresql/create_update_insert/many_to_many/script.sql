@@ -29,6 +29,9 @@ insert into peoples_channels(people_id, channel_id) values (2, 1);
 insert into peoples_channels(people_id, channel_id) values (2, 2);
 insert into peoples_channels(people_id, channel_id) values (3, 3);
 
-select p.firstname, c.title from peoples_channels pc
+select
+    p.firstname as "Человек",
+    c.title as "Канал"
+from peoples_channels pc
     inner join peoples p on pc.people_id = p.id
     inner join channels c on pc.channel_id = c.id;

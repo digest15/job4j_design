@@ -10,8 +10,15 @@ create table tasks(
 );
 
 insert into employees(firstname) values ('programmer1');
+insert into employees(firstname) values ('programmer2');
 insert into tasks(title, employee_id) VALUES ('Make new table in DB', 1);
 
 select * from tasks;
 
 select * from employees where id in (select employee_id from tasks);
+
+select
+    e.firstname as "Разработчик",
+    t.title as "Задача"
+from employees e
+    join tasks t on e.id = t.employee_id;
