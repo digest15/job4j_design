@@ -28,7 +28,7 @@ select
     d.name department
 from employees e
     left join departments d
-        on e.department_id = d.id;
+        on e.department_id = d.id and d.id is not null;
 
 --right join
 select
@@ -36,7 +36,8 @@ select
     d.name department
 from employees e
     right join departments d
-        on e.department_id = d.id;
+        on e.department_id = d.id
+where e.name is not null;
 
 --where departmen without employees
 select
@@ -54,14 +55,14 @@ create table teens (
     gender varchar(1)
 );
 
-insert into teens (name, gender) values ('Вася', 'M');
-insert into teens (name, gender) values ('Петя', 'M');
-insert into teens (name, gender) values ('Глаша', 'Ж');
-insert into teens (name, gender) values ('Маша', 'Ж');
+insert into teens (name, gender) values ('William', 'M');
+insert into teens (name, gender) values ('Hugo', 'M');
+insert into teens (name, gender) values ('Eva', 'Ж');
+insert into teens (name, gender) values ('Birgitta', 'Ж');
 
 select
     t1.name as "Родитель 1",
     t2.name as "Родитель 2"
 from teens t1
     cross join teens t2
-where t1.name != t2.name;
+where t1.id != t2.id;
