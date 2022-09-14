@@ -28,6 +28,7 @@ insert into car_bodies (name) values ('vagon');
 
 insert into car_engines (name) values ('v6');
 insert into car_engines (name) values ('v8');
+insert into car_engines (name) values ('v12');
 insert into car_engines (name) values ('gibrid');
 insert into car_engines (name) values ('electric');
 
@@ -35,6 +36,7 @@ insert into car_transmissions (name) values ('mehanic');
 insert into car_transmissions (name) values ('gidro');
 insert into car_transmissions (name) values ('variator');
 insert into car_transmissions (name) values ('no transmission');
+insert into car_transmissions (name) values ('CVT');
 
 insert into car (name, car_bodi_id, car_engine_id, car_transmission_id) values ('Mazda', 2, 1, 2);
 insert into car (name, car_bodi_id, car_engine_id, car_transmission_id) values ('Honda', 1, 3, 3);
@@ -70,15 +72,17 @@ select
     b.name
 from car_engines b
     left join car c
-        on b.id = c.car_bodi_id
+        on b.id = c.car_engine_id
 where c.id is null;
+
+select * from car;
 
 -- car transmission without car
 select
     b.name
 from car_transmissions b
     left join car c
-        on b.id = c.car_bodi_id
+        on b.id = c.car_transmission_id
 where c.id is null;
 
 
