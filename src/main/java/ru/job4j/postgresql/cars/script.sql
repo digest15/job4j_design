@@ -85,6 +85,24 @@ from car_transmissions b
         on b.id = c.car_transmission_id
 where c.id is null;
 
+--create view
+create view get_all_car as
+select
+    car.id id,
+    car.name car,
+    body.name body,
+    eng.name engine,
+    trm.name transmission
+from car car
+    left join car_bodies body
+        on car.car_bodi_id = body.id
+    left join car_engines eng
+        on car.car_engine_id = eng.id
+    left join car_transmissions trm
+        on car.car_transmission_id = trm.id;
+
+select * from get_all_car;
+
 
 
 
