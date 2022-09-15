@@ -28,16 +28,15 @@ select
     d.name department
 from employees e
     left join departments d
-        on e.department_id = d.id and d.id is not null;
+        on e.department_id = d.id;
 
 --right join
 select
     e.name employee,
     d.name department
-from employees e
-    right join departments d
-        on e.department_id = d.id
-where e.name is not null;
+from departments d
+    right join employees e
+        on e.department_id = d.id;
 
 --where departmen without employees
 select
@@ -65,4 +64,5 @@ select
     t2.name as "Родитель 2"
 from teens t1
     cross join teens t2
-where t1.id != t2.id;
+where t1.id != t2.id
+    and t1.gender != t2.gender;
