@@ -12,7 +12,8 @@ create or replace function tax()
 $$
     BEGIN
         update products
-        set price = price + price * 0.2;
+        set price = price + price * 0.2
+        where id = (select id from inserted);
         return NEW;
     END;
 $$
@@ -30,8 +31,7 @@ create or replace function tax_row()
     returns trigger as
 $$
     BEGIN
-        update products
-        set price = price + price * 0.2;
+        NEW.price = NEW.price + NEW.price * 0.2;
         return NEW;
     END;
 $$
@@ -74,3 +74,4 @@ insert into products (name, producer, count, price) values ('SheesBurger', 'Deli
 
 select * from products;
 select * from history_of_price;
+delete from products;
