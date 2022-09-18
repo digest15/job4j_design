@@ -12,7 +12,21 @@ insert into products (name, producer, count, price) values ('product_2', 'produs
 
 --transaction
 begin transaction isolation level serializable;
+    update products set count = 26 where name = 'product_2';
+    select * from products;
+commit;
 
-update products set count = 26 where name = 'product_2';
-
+begin;
+    insert into products (name, producer, count, price) values ('product_2', 'produser_2', 20, 200);
+    select * from products;
+    savepoint svt1;
+    insert into products (name, producer, count, price) values ('product_2', 'produser_2', 20, 200);
+    select * from products;
+    savepoint svt2;
+    delete from products;
+    rollback to svt1;
+commit;
 select * from products;
+
+
+
