@@ -9,16 +9,16 @@ create table films (
     name varchar(255)
 );
 
-create table peoples_films (
-    id serial primary key,
-    film_id int references films(id),
-    people_id int references peoples(id)
-);
-
 create table addresses (
     id serial primary key,
-    name varchar(255),
-    people_id int references peoples(id)
+    name varchar(255)
+);
+
+create table films_sharings (
+    people_id int references peoples(id),
+    address_id int references addresses(id),
+    film_id int references films(id),
+    PRIMARY KEY(people_id, address_id)
 );
 
 
@@ -33,16 +33,15 @@ Table films {
   name varchar
 }
 
-Table peoples_films {
-  id int [pk]
-  film_id int
+Table films_sharings {
   people_id int
+  address_id int
+  film_id int
 }
 
 Table addresses {
   id int [pk]
   name varchar
-  people_id int
 }
 
 // Creating references
