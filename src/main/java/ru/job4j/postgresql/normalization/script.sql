@@ -1,7 +1,8 @@
 create table peoples (
     id serial primary key,
     name varchar(255),
-    sex varchar(1)
+    address varchar(255),
+    gender_id int references genders(id)
 );
 
 create table films (
@@ -9,24 +10,29 @@ create table films (
     name varchar(255)
 );
 
-create table addresses (
+create table genders (
     id serial primary key,
-    name varchar(255)
+    name varchar(6)
 );
 
 create table films_sharings (
     people_id int references peoples(id),
-    address_id int references addresses(id),
     film_id int references films(id),
-    PRIMARY KEY(people_id, address_id)
+    PRIMARY KEY(people_id, film_id)
 );
 
 
 Table peoples {
   id int [pk]
   name varchar
-  sex varchar
+  address carchar
+  gender_id int
  }
+
+ Table gender {
+  id int [pk]
+  name varchar
+}
 
 Table films {
   id int [pk]
@@ -35,18 +41,9 @@ Table films {
 
 Table films_sharings {
   people_id int
-  address_id int
   film_id int
 }
 
-Table addresses {
-  id int [pk]
-  name varchar
-}
-
-// Creating references
-// You can also define relaionship separately
-// > many-to-one; < one-to-many; - one-to-one; <> many-to-many
-Ref: peoples_films.film_id > films.id
-Ref: peoples_films.people_id > peoples.id
-Ref: addresses.people_id > peoples.id
+Ref: films_sharings.film_id > films.id
+Ref: films_sharings.people_id > peoples.id
+Ref: peoples.gender_id > gender.id
