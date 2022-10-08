@@ -14,16 +14,21 @@ public class ConnectionDemo {
     private static final String CONNECTION_PASSWORD = "connection.password";
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        try (Connection connection = createConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            System.out.println(metaData.getUserName());
+            System.out.println(metaData.getURL());
+        }
+    }
+
+    public static Connection createConnection() throws SQLException {
         Config config = new Config(DB_CONNECTION_PROPERTY_PATH);
         config.load();
         String url = config.value(CONNECTION_URL);
         String login = config.value(CONNECTION_USERNAME);
         String password = config.value(CONNECTION_PASSWORD);
+        Connection connection = DriverManager.getConnection(url, login, password);
 
-        try (Connection connection = DriverManager.getConnection(url, login, password)) {
-            DatabaseMetaData metaData = connection.getMetaData();
-            System.out.println(metaData.getUserName());
-            System.out.println(metaData.getURL());
-        }
+        return connection;
     }
 }
