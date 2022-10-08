@@ -1,4 +1,4 @@
-package ru.job4j.postgresql.jdbc;
+package ru.job4j.postgresql.jdbc.statement;
 
 import java.io.InputStream;
 import java.util.Properties;
