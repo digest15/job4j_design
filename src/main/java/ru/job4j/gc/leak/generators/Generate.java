@@ -6,9 +6,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface Generate {
+public interface Generate<E> {
 
-    void generate();
+    List<E> generate();
 
     default List<String> read(String path) throws IOException {
         List<String> text = new ArrayList<>();

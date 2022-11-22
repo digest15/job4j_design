@@ -18,6 +18,8 @@ public class Menu {
     public static final String TEXT_OF_POST = "Введите текст";
     public static final String EXIT = "Конец работы";
 
+    private static Random random;
+
     public static final String MENU = "Введите 1 для создание поста.\n"
                 + "Введите 2, чтобы создать определенное количество постов.\n"
                 + "Введите 3, чтобы показать все посты.\n"
@@ -25,15 +27,15 @@ public class Menu {
                 + "Введите любое другое число для выхода.\n";
 
     public static void main(String[] args) {
-        Random random = new Random();
+        random = new Random();
         UserGenerator userGenerator = new UserGenerator(random);
         CommentGenerator commentGenerator = new CommentGenerator(random, userGenerator);
         Scanner scanner = new Scanner(System.in);
         PostStore postStore = new PostStore();
-        start(commentGenerator, scanner, userGenerator, postStore);
+        start(commentGenerator, scanner, postStore);
     }
 
-    private static void start(CommentGenerator commentGenerator, Scanner scanner, UserGenerator userGenerator, PostStore postStore) {
+    private static void start(CommentGenerator commentGenerator, Scanner scanner, PostStore postStore) {
         boolean run = true;
         while (run) {
             System.out.println(MENU);
@@ -43,16 +45,14 @@ public class Menu {
             if (ADD_POST == userChoice) {
                 System.out.println(TEXT_OF_POST);
                 String text = scanner.nextLine();
-                userGenerator.generate();
-                commentGenerator.generate();
-                postStore.add(new Post(text, CommentGenerator.getComments()));
+                postStore.add(new Post(text, commentGenerator.generate()));
             } else if (ADD_MANY_POST == userChoice) {
                 System.out.println(TEXT_OF_POST);
                 String text = scanner.nextLine();
                 System.out.println(COUNT);
-                String count = scanner.nextLine();
-                for (int i = 0; i < Integer.parseInt(count); i++) {
-                    createPost(commentGenerator, userGenerator, postStore, text);
+                int count = Integer.parseInt(scanner.nextLine());
+                for (int i = 0; i < count; i++) {
+                    createPost(commentGenerator, postStore, text);
                 }
             } else if (SHOW_ALL_POSTS == userChoice) {
                 System.out.println(PostStore.getPosts());
@@ -65,10 +65,7 @@ public class Menu {
         }
     }
 
-    private static void createPost(CommentGenerator commentGenerator,
-                                   UserGenerator userGenerator, PostStore postStore, String text) {
-        userGenerator.generate();
-        commentGenerator.generate();
-        postStore.add(new Post(text, CommentGenerator.getComments()));
+    private static void createPost(CommentGenerator commentGenerator, PostStore postStore, String text) {
+        postStore.add(new Post(text, commentGenerator.generate()));
     }
 }
