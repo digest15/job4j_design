@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostStore {
-    private static HashMap<Integer, Post> posts = new HashMap<>();
+    private HashMap<Integer, Post> posts = new HashMap<>();
 
     private AtomicInteger atomicInteger = new AtomicInteger(1);
 
@@ -23,7 +23,7 @@ public class PostStore {
         posts.clear();
     }
 
-    public static Collection<Post> getPosts() {
+    public Collection<Post> getPosts() {
         return posts.values();
     }
 }
