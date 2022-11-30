@@ -15,7 +15,11 @@ public abstract class AbstractCache<K, V> {
     public V get(K key) {
         return Optional.ofNullable(cache.get(key))
                 .map(SoftReference::get)
-                .orElseGet(() -> load(key));
+                .orElseGet(() -> {
+                    V value = load(key);
+                    put(key, value);
+                    return value;
+                });
     }
 
     protected abstract V load(K key);
