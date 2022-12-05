@@ -18,7 +18,10 @@ public class MaxMin {
 
     private static <T> T findBy(List<T> list, Comparator<T> comparator, IntPredicate predicate) {
         Iterator<? extends T> i = list.iterator();
-        T candidate = i.next();
+        T candidate = null;
+        if (i.hasNext()) {
+            candidate = i.next();
+        }
 
         while (i.hasNext()) {
             T next = i.next();
