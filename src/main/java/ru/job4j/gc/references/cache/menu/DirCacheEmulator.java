@@ -7,6 +7,13 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+
+/**
+ * Example 3
+ * Этот класс нарушает принцип Single Responsibility Principle
+ * так как он знает как создавать кэш
+ * и как работать с пользователем
+ */
 public class DirCacheEmulator extends AbstractEmulator {
     private static final int READ_FILE = 1;
     private static final int EXIT = 0;
