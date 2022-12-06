@@ -1,16 +1,14 @@
 package ru.job4j.tdd.template;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
-
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
+@Disabled
 public class GeneratorImplTest {
-    @Ignore
     @Test
     public void whenAllIsFine() {
         String expecting = "I am a Petr Arsentev, Who are you?";
@@ -25,60 +23,52 @@ public class GeneratorImplTest {
         assertThat(actual).isEqualTo(expecting);
     }
 
-    @Ignore
     @Test
     public void whenProduceWithEmptyMapThenGetException() {
-        assertThrows(
-                IllegalArgumentException.class,
+        assertThatThrownBy(
                 () -> new GeneratorImpl().produce(
                         "I am a ${name}, Who are ${subject}?",
                         Map.of()
                 )
-        );
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Ignore
     @Test
     public void whenNoKeysInMapThenGetException() {
         Map<String, String> map = Map.of(
                 "name", "Petr Arsentev"
         );
-        assertThrows(
-                Exception.class,
+        assertThatThrownBy(
                 () -> new GeneratorImpl().produce(
                         "I am a ${name}, Who are ${subject}?",
                         map
                 )
-        );
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Ignore
     @Test
     public void whenNoKeysInTemplateThenGetException() {
         Map<String, String> map = Map.of(
                 "name", "Petr Arsentev"
         );
-        assertThrows(
-                IllegalArgumentException.class,
+        assertThatThrownBy(
                 () -> new GeneratorImpl().produce(
                         "Who are ${subject}?",
                         map
                 )
-        );
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Ignore
     @Test
     public void whenTemplateIsEmptyGetException() {
         Map<String, String> map = Map.of(
                 "name", "Petr Arsentev"
         );
-        assertThrows(
-                IllegalArgumentException.class,
+        assertThatThrownBy(
                 () -> new GeneratorImpl().produce(
                         "",
                         map
                 )
-        );
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }
