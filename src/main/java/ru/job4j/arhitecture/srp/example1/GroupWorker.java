@@ -12,9 +12,9 @@ package ru.job4j.arhitecture.srp.example1;
  * конкретной реализации этих алгоритмов.
  */
 public interface GroupWorker {
-    public void register(Student student);
+    public void register(GotStudent student);
 
-    public void calculateResults(Student student);
+    public void calculateResults(GotStudent student);
 
-    public void sendEmail(Student student);
+    public void sendEmail(GotStudent student);
 }
