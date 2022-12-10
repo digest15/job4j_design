@@ -20,7 +20,7 @@ public class GotStudent {
     }
 
     public void calculateFinalEstimation() {
-//        this.finalEstimation =
+
     }
 
     public boolean passExam(Exam exam) {
