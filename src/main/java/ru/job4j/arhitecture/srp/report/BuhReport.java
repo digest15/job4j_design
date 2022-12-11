@@ -9,14 +9,17 @@ import ru.job4j.arhitecture.srp.report.store.Store;
 import java.util.Calendar;
 import java.util.function.Predicate;
 
-public class BuhReport extends AbstractEmloyeeReport {
+public class BuhReport implements Report {
+    private final Store store;
+    private final DateTimeParser<Calendar> dateTimeParser;
     protected final CurrencyConverter currencyConverter;
     protected Currency from;
     protected Currency to;
 
     public BuhReport(Store store, DateTimeParser<Calendar> dateTimeParser,
                      CurrencyConverter currencyConverter, Currency from, Currency to) {
-        super(store, dateTimeParser);
+        this.store = store;
+        this.dateTimeParser = dateTimeParser;
         this.currencyConverter = currencyConverter;
         this.from = from;
         this.to = to;

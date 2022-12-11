@@ -1,17 +1,17 @@
 package ru.job4j.arhitecture.srp.report;
 
-import ru.job4j.arhitecture.srp.report.formatter.DateTimeParser;
 import ru.job4j.arhitecture.srp.report.model.Employee;
 import ru.job4j.arhitecture.srp.report.store.Store;
 
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class HrReport extends AbstractEmloyeeReport {
-    public HrReport(Store store, DateTimeParser<Calendar> dateTimeParser) {
-        super(store, dateTimeParser);
+public class HrReport implements Report {
+    private final Store store;
+
+    public HrReport(Store store) {
+        this.store = store;
     }
 
     @Override

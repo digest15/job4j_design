@@ -7,10 +7,15 @@ import ru.job4j.arhitecture.srp.report.store.Store;
 import java.util.Calendar;
 import java.util.function.Predicate;
 
-public class ReportEngine extends AbstractEmloyeeReport {
+public class ReportEngine implements Report {
+    private final Store store;
+    private final DateTimeParser<Calendar> dateTimeParser;
+
     public ReportEngine(Store store, DateTimeParser<Calendar> dateTimeParser) {
-        super(store, dateTimeParser);
+        this.store = store;
+        this.dateTimeParser = dateTimeParser;
     }
+
     @Override
     public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
