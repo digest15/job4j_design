@@ -2,13 +2,12 @@ package ru.job4j.arhitecture.srp.report.store;
 
 import org.junit.jupiter.api.Test;
 import ru.job4j.arhitecture.srp.report.Report;
+import ru.job4j.arhitecture.srp.report.XmlReport;
 import ru.job4j.arhitecture.srp.report.model.Employee;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.StringWriter;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,21 +17,22 @@ class XmlReportTest {
         MemStore store = new MemStore();
         Calendar date = Calendar.getInstance();
         date.set(1987, Calendar.AUGUST, 22, 0, 0, 0);
+        date.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
         Employee worker = new Employee("Ivan", date, date, 100);
         store.add(worker);
-        JAXBContext context = JAXBContext.newInstance(Employee.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        Report engine = new XmlReport(store, marshaller);
-        String expect = getExpected(marshaller, worker);
+        Report engine = new XmlReport(store);
+        String expect = """
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <employees>
+                    <employee>
+                        <name>Ivan</name>
+                        <hired>22:08:1987 05:00</hired>
+                        <fired>22:08:1987 05:00</fired>
+                        <salary>100.0</salary>
+                    </employee>
+                </employees>                                
+                """;
         assertThat(engine.generate(em -> true)).isEqualTo(expect);
     }
 
-    private String getExpected(Marshaller marshaller, Employee employee) throws JAXBException {
-        String xml;
-        StringWriter writer = new StringWriter();
-        marshaller.marshal(employee, writer);
-        xml = writer.getBuffer().toString();
-        return xml;
-    }
 }

@@ -1,6 +1,7 @@
 package ru.job4j.arhitecture.srp.report;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ru.job4j.arhitecture.srp.report.model.Employee;
 import ru.job4j.arhitecture.srp.report.store.Store;
 
@@ -11,9 +12,11 @@ public class JsonReport implements Report {
     private final Store store;
     private final Gson gson;
 
-    public JsonReport(Store store, Gson gson) {
+    public JsonReport(Store store) {
         this.store = store;
-        this.gson = gson;
+        this.gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
     }
 
     @Override
