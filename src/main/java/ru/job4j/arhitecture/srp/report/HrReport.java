@@ -10,8 +10,13 @@ import java.util.function.Predicate;
 public class HrReport implements Report {
     private final Store store;
 
+    private Comparator<Employee> comparator;
+
     public HrReport(Store store) {
         this.store = store;
+        this.comparator = Comparator
+                .comparing(Employee::getSalary)
+                .reversed();
     }
 
     @Override
@@ -20,9 +25,7 @@ public class HrReport implements Report {
         text.append("Name; Salary;")
                 .append(System.lineSeparator());
         List<Employee> employees = store.findBy(filter);
-        employees.sort(Comparator
-                .comparing(Employee::getSalary)
-                .reversed());
+        employees.sort(comparator);
         for (Employee employee : employees) {
             text.append(employee.getName()).append(" ")
                     .append(employee.getSalary())

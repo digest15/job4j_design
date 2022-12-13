@@ -18,9 +18,10 @@ class ItReportTest {
         Employee worker = new Employee("Ivan", now, now, 100);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report engine = new ItReport(store, parser, ";");
+        String delimetr = ";";
+        Report engine = new ItReport(store, parser, delimetr);
         StringBuilder expect = new StringBuilder()
-                .append("Name; Hired; Fired; Salary;")
+                .append("Name;Hired;Fired;Salary;".replaceAll(";", delimetr))
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(parser.parse(worker.getHired())).append(";")
