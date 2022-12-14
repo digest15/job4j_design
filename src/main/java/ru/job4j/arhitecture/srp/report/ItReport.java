@@ -22,13 +22,13 @@ public class ItReport implements Report {
     @Override
     public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
-        text.append("Name;Hired;Fired;Salary;".replaceAll(";", delimetr))
+        text.append("Name;Hired;Fired;Salary".replaceAll(";", delimetr))
                 .append(System.lineSeparator());
         for (Employee employee : store.findBy(filter)) {
             text.append(employee.getName()).append(delimetr)
                     .append(dateTimeParser.parse(employee.getHired())).append(delimetr)
                     .append(dateTimeParser.parse(employee.getFired())).append(delimetr)
-                    .append(employee.getSalary()).append(delimetr)
+                    .append(employee.getSalary())
                     .append(System.lineSeparator());
         }
         return text.toString();
