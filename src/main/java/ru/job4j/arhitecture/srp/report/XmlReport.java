@@ -17,17 +17,21 @@ import java.util.StringJoiner;
 import java.util.function.Predicate;
 
 public class XmlReport implements Report {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
     private final Store store;
     private final Marshaller marshaller;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
-
-    public XmlReport(Store store) throws JAXBException {
+    public XmlReport(Store store) throws IllegalArgumentException {
         this.store = store;
-        JAXBContext context = JAXBContext.newInstance(Employees.class);
-        marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.setAdapter(new CalendarAdapter());
+        try {
+            JAXBContext context = JAXBContext.newInstance(Employees.class);
+            marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.setAdapter(new CalendarAdapter());
+        } catch (JAXBException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     @Override
@@ -35,8 +39,8 @@ public class XmlReport implements Report {
         List<Employee> employees = store.findBy(filter);
         StringJoiner xml = new StringJoiner(System.lineSeparator());
         try (StringWriter writer = new StringWriter()) {
-                marshaller.marshal(new Employees(employees), writer);
-                xml.add(writer.getBuffer().toString());
+            marshaller.marshal(new Employees(employees), writer);
+            xml.add(writer.getBuffer().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
