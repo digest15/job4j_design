@@ -1,9 +1,9 @@
-package ru.job4j.arhitecture.lsp.example1and2;
+package ru.job4j.arhitecture.lsp.examples.animals;
 
 import java.util.Objects;
 
 public abstract class Animals {
-    private final String voice;
+    protected String voice;
 
     public Animals(String voice) {
         if (Objects.isNull(voice) || voice.isEmpty()) {
