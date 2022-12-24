@@ -1,24 +1,25 @@
 package ru.job4j.arhitecture.lsp.protuctstore.store;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.arhitecture.lsp.protuctstore.entity.Stored;
+import ru.job4j.arhitecture.lsp.protuctstore.entity.MockFood;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TrashTest {
     @Test
     public void whenAddStoredLess75Expiration() {
-        Store<Stored> store = new Trash();
-        Stored someStored = () -> 74;
-        boolean isAdded = store.add(someStored);
+        Store<MockFood> store = new Trash<>();
+        MockFood someExpiring = new MockFood(74.0, 0.0);
+        boolean isAdded = store.add(someExpiring);
         assertThat(isAdded).isFalse();
     }
 
     @Test
     public void whenAddStoredMoreOrEqual75Expiration() {
-        Store<Stored> store = new Trash();
-        Stored someStored = () -> 75;
-        boolean isAdded = store.add(someStored);
+        Store<MockFood> store = new Trash<>();
+        MockFood someExpiring = new MockFood(75.0, 0.0);
+        boolean isAdded = store.add(someExpiring);
         assertThat(isAdded).isTrue();
     }
 }

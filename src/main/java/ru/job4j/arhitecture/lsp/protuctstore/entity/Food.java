@@ -1,15 +1,23 @@
 package ru.job4j.arhitecture.lsp.protuctstore.entity;
 
+import ru.job4j.arhitecture.lsp.protuctstore.expiration.ExpirationCalculator;
+
 import java.time.LocalDate;
 
-public abstract class Food implements Stored {
+public abstract class Food implements Expiring, Pricing {
     protected String name;
     protected LocalDate createDate;
     protected LocalDate expiryDate;
 
-    protected Integer price;
+    protected Double price;
 
-    protected Integer discount;
+    protected Double discount;
+
+    protected ExpirationCalculator<LocalDate> expirationCalculator;
+
+    public Food(ExpirationCalculator<LocalDate> expirationCalculator) {
+        this.expirationCalculator = expirationCalculator;
+    }
 
     public String getName() {
         return name;
@@ -35,19 +43,19 @@ public abstract class Food implements Stored {
         this.expiryDate = expiryDate;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Integer getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
 }

@@ -1,37 +1,38 @@
 package ru.job4j.arhitecture.lsp.protuctstore.store;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.arhitecture.lsp.protuctstore.entity.Stored;
+import ru.job4j.arhitecture.lsp.protuctstore.entity.MockFood;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ShopTest {
     @Test
     public void whenAddStoredLess25Expiration() {
-        Store<Stored> store = new Shop();
-        Stored someStored = () -> 13;
-        boolean isAdded = store.add(someStored);
+        Store<MockFood> store = new Shop<>((e) -> 0);
+        MockFood someExpiring = new MockFood(13.0, 0.0);
+        boolean isAdded = store.add(someExpiring);
         assertThat(isAdded).isFalse();
     }
 
     @Test
     public void whenAddStoredMoreOrEqual25ButLess75Expiration() {
-        Store<Stored> store = new Shop();
+        Store<MockFood> store = new Shop<>((e) -> 0);
 
-        Stored someStored1 = () -> 25;
-        boolean isAdded1 = store.add(someStored1);
+        MockFood someExpiring1 = new MockFood(25.0, 0.0);
+        boolean isAdded1 = store.add(someExpiring1);
         assertThat(isAdded1).isTrue();
 
-        Stored someStored2 = () -> 74;
-        boolean isAdded2 = store.add(someStored2);
+        MockFood someExpiring2 = new MockFood(74.0, 0.0);
+        boolean isAdded2 = store.add(someExpiring2);
         assertThat(isAdded2).isTrue();
     }
 
     @Test
     public void whenAddStoredMore75Expiration() {
-        Store<Stored> store = new Shop();
-        Stored someStored = () -> 75;
-        boolean isAdded = store.add(someStored);
+        Store<MockFood> store = new Shop<>((e) -> 0);
+        MockFood someExpiring = new MockFood(75.0, 0.0);
+        boolean isAdded = store.add(someExpiring);
         assertThat(isAdded).isFalse();
     }
 

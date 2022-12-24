@@ -1,11 +1,12 @@
 package ru.job4j.arhitecture.lsp.protuctstore.store;
 
-import ru.job4j.arhitecture.lsp.protuctstore.entity.Stored;
+import ru.job4j.arhitecture.lsp.protuctstore.entity.Expiring;
+import ru.job4j.arhitecture.lsp.protuctstore.entity.Pricing;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public abstract class AbstractStore<E extends Stored> implements Store<E> {
+public abstract class AbstractStore<E extends Expiring & Pricing> implements Store<E> {
 
     private ArrayList<E> storeds = new ArrayList<>();
 
