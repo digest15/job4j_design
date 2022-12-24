@@ -6,7 +6,7 @@ public class ParkingImpl implements Parking {
     }
 
     @Override
-    public boolean park(Parked auto) {
-        return false;
+    public Boolean park(Parked auto) {
+        return null;
     }
 }
