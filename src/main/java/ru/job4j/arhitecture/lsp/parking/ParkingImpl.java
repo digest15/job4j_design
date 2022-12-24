@@ -1,20 +1,17 @@
 package ru.job4j.arhitecture.lsp.parking;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ParkingImpl implements Parking {
 
     private final EnumMap<SocketType, Integer> socketsMap;
-    private final List<Parked> park;
+    private final Set<Parked> park;
 
     public ParkingImpl(int lightSockets, int heavySockets) {
         socketsMap = new EnumMap<>(SocketType.class);
         socketsMap.put(SocketType.LIGHT, lightSockets);
         socketsMap.put(SocketType.HEAVY, heavySockets);
-        park = new ArrayList<>();
+        park = new HashSet<>();
     }
 
     @Override
@@ -25,12 +22,20 @@ public class ParkingImpl implements Parking {
         }
 
         Boolean isPark = Boolean.FALSE;
-        if (size == 1) {
-            isPark = parkLightAuto(auto, size);
-        } else if (size > 1) {
-            isPark = parkHeavyAuto(auto, size);
+
+        if (!park.contains(auto)) {
+            if (size == 1) {
+                isPark = parkLightAuto(auto, size);
+            } else if (size > 1) {
+                isPark = parkHeavyAuto(auto, size);
+            }
         }
         return isPark;
+    }
+
+    @Override
+    public Boolean unpark(Parked auto) {
+        return park.remove(auto);
     }
 
     @Override
@@ -41,6 +46,11 @@ public class ParkingImpl implements Parking {
     @Override
     public int size() {
         return park.size();
+    }
+
+    @Override
+    public Set<Parked> getPark() {
+        return new HashSet<>(park);
     }
 
     private Boolean parkHeavyAuto(Parked auto, int size) {

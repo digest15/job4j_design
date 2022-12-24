@@ -45,6 +45,7 @@ class ParkingTest {
             parking.park(() -> j);
         }
         assertThat(parking.size()).isEqualTo(expected);
+        assertThat(parking.getPark().size()).isEqualTo(expected);
     }
 
     @Test
@@ -52,5 +53,31 @@ class ParkingTest {
         Parking parking = new ParkingImpl(1, 1);
         assertThatThrownBy(() -> parking.park(() -> 0))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void whenUnpark() {
+        Parked parked1 = () -> 1;
+        Parked parked2 = () -> 1;
+        Parking parking = new ParkingImpl(1, 1);
+        parking.park(parked1);
+
+        assertThat(parking.unpark(parked1))
+                .isTrue();
+        assertThat(parking.unpark(parked2))
+                .isFalse();
+    }
+
+    @Test
+    public void whenParkItMustContainsInParkset() {
+        Parked parked1 = () -> 1;
+        Parked parked2 = () -> 1;
+        Parking parking = new ParkingImpl(1, 1);
+        parking.park(parked1);
+
+        assertThat(parking.getPark())
+                .contains(parked1);
+        assertThat(parking.getPark())
+                .doesNotContain(parked2);
     }
 }
