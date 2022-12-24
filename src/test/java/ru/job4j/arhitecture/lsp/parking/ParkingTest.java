@@ -32,7 +32,25 @@ class ParkingTest {
 
     @Test
     public void whenParkHeavyAutoAndAnySocketsNotAvailable() {
-        Parking parking = new ParkingImpl(3, 1);
-        assertThat(parking.park(() -> 3)).isFalse();
+        Parking parking = new ParkingImpl(1, 0);
+        assertThat(parking.park(() -> 2)).isFalse();
+    }
+
+    @Test
+    public void whenAddTwoItMustBeContainsTwo() {
+        int expected = 2;
+        Parking parking = new ParkingImpl(1, expected - 1);
+        for (int i = 1; i <= expected; i++) {
+            int j = i;
+            parking.park(() -> j);
+        }
+        assertThat(parking.size()).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenParkingSizeIsZero() {
+        Parking parking = new ParkingImpl(1, 1);
+        assertThatThrownBy(() -> parking.park(() -> 0))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
