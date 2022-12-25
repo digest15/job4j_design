@@ -10,4 +10,8 @@ public interface Parking extends Iterable<Parked> {
     int size();
 
     Set<Parked> getPark();
+
+    int getLightAvailableSockets();
+
+    int getHighAvailableSockets();
 }

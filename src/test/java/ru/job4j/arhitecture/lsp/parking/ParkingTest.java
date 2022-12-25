@@ -37,6 +37,72 @@ class ParkingTest {
     }
 
     @Test
+    public void whenParkLightAutoItMustReduceLightSocketsCount() {
+        Parked parked = () -> 1;
+        int startSockets = 2;
+        int expectedSockets = 1;
+        Parking parking = new ParkingImpl(startSockets, 0);
+
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(startSockets);
+        parking.park(parked);
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
+    public void whenParkHighAutoItMustReduceHighSocketsCount() {
+        Parked parked = () -> 2;
+        int startSockets = 2;
+        int expectedSockets = 1;
+        Parking parking = new ParkingImpl(0, startSockets);
+
+        assertThat(parking.getHighAvailableSockets()).isEqualTo(startSockets);
+        parking.park(parked);
+        assertThat(parking.getHighAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
+    public void whenParkHighAutoOnLightSocketsItMustReduceLightSocketsCount() {
+        Parked parked = () -> 2;
+        int startSockets = 3;
+        int expectedSockets = 1;
+        Parking parking = new ParkingImpl(startSockets, 0);
+
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(startSockets);
+        parking.park(parked);
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
+    public void whenUnparkLightAutoInMustIncreaseLightSocketsCount() {
+        Parked parked = () -> 1;
+        int expectedSockets = 2;
+        Parking parking = new ParkingImpl(expectedSockets, 0);
+        parking.park(parked);
+        parking.unpark(parked);
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
+    public void whenUnparkHightAutoInMustIncreaseHighSocketsCount() {
+        Parked parked = () -> 2;
+        int expectedSockets = 2;
+        Parking parking = new ParkingImpl(0, expectedSockets);
+        parking.park(parked);
+        parking.unpark(parked);
+        assertThat(parking.getHighAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
+    public void whenUnparkHighAutoFromLightSocketsItMustIncreaseLightSocketsCount() {
+        Parked parked = () -> 2;
+        int expectedSockets = 3;
+        Parking parking = new ParkingImpl(expectedSockets, 0);
+        parking.park(parked);
+        parking.unpark(parked);
+        assertThat(parking.getLightAvailableSockets()).isEqualTo(expectedSockets);
+    }
+
+    @Test
     public void whenAddTwoItMustBeContainsTwo() {
         int expected = 2;
         Parking parking = new ParkingImpl(1, expected - 1);
@@ -49,7 +115,7 @@ class ParkingTest {
     }
 
     @Test
-    public void whenParkingSizeIsZero() {
+    public void whenParkAndSizeIsZero() {
         Parking parking = new ParkingImpl(1, 1);
         assertThatThrownBy(() -> parking.park(() -> 0))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -66,6 +132,13 @@ class ParkingTest {
                 .isTrue();
         assertThat(parking.unpark(parked2))
                 .isFalse();
+    }
+
+    @Test
+    public void whenUnparkAndSizeIsZero() {
+        Parking parking = new ParkingImpl(1, 1);
+        assertThatThrownBy(() -> parking.unpark(() -> 0))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

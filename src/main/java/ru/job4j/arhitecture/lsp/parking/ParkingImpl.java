@@ -5,13 +5,13 @@ import java.util.*;
 public class ParkingImpl implements Parking {
 
     private final EnumMap<SocketType, Integer> socketsMap;
-    private final Set<Parked> park;
+    private final HashMap<Parked, SocketType> park;
 
     public ParkingImpl(int lightSockets, int heavySockets) {
         socketsMap = new EnumMap<>(SocketType.class);
         socketsMap.put(SocketType.LIGHT, lightSockets);
         socketsMap.put(SocketType.HEAVY, heavySockets);
-        park = new HashSet<>();
+        park = new HashMap<>();
     }
 
     @Override
@@ -23,10 +23,10 @@ public class ParkingImpl implements Parking {
 
         Boolean isPark = Boolean.FALSE;
 
-        if (!park.contains(auto)) {
+        if (!park.containsKey(auto)) {
             if (size == 1) {
                 isPark = parkLightAuto(auto, size);
-            } else if (size > 1) {
+            } else {
                 isPark = parkHeavyAuto(auto, size);
             }
         }
@@ -35,12 +35,28 @@ public class ParkingImpl implements Parking {
 
     @Override
     public Boolean unpark(Parked auto) {
-        return park.remove(auto);
+        int parkSize = auto.parkSize();
+        if (parkSize == 0) {
+            throw new IllegalArgumentException("Park size can't be 0, auto: " + auto);
+        }
+
+        SocketType removeType = park.remove(auto);
+        boolean isUnpark = removeType != null;
+        if (isUnpark) {
+            int count = socketsMap.get(removeType);
+            if (parkSize == 1 || SocketType.HEAVY.equals(removeType)) {
+                count++;
+            } else if (SocketType.LIGHT.equals(removeType)) {
+                count = count + parkSize;
+            }
+            socketsMap.put(removeType, count);
+        }
+        return isUnpark;
     }
 
     @Override
     public Iterator<Parked> iterator() {
-        return park.iterator();
+        return park.keySet().iterator();
     }
 
     @Override
@@ -50,14 +66,24 @@ public class ParkingImpl implements Parking {
 
     @Override
     public Set<Parked> getPark() {
-        return new HashSet<>(park);
+        return new HashSet<>(park.keySet());
+    }
+
+    @Override
+    public int getLightAvailableSockets() {
+        return socketsMap.get(SocketType.LIGHT);
+    }
+
+    @Override
+    public int getHighAvailableSockets() {
+        return socketsMap.get(SocketType.HEAVY);
     }
 
     private Boolean parkHeavyAuto(Parked auto, int size) {
         Boolean isPark;
         int available = socketsMap.get(SocketType.HEAVY);
         if (available > 0) {
-            park.add(auto);
+            park.put(auto, SocketType.HEAVY);
             available--;
             socketsMap.put(SocketType.HEAVY, available);
             isPark = Boolean.TRUE;
@@ -71,7 +97,7 @@ public class ParkingImpl implements Parking {
         Boolean isPark = Boolean.FALSE;
         int available = socketsMap.get(SocketType.LIGHT);
         if (available >= size) {
-            park.add(auto);
+            park.put(auto, SocketType.LIGHT);
             available = available - size;
             socketsMap.put(SocketType.LIGHT, available);
             isPark = Boolean.TRUE;
