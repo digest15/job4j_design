@@ -4,15 +4,17 @@ import java.util.*;
 
 public class SimpleMenu implements Menu {
 
-    private final List<MenuItem> rootElements = new ArrayList<>();
+    private final SimpleMenuItem rootMenuItem;
+
+    public SimpleMenu() {
+        this.rootMenuItem = new SimpleMenuItem(Menu.ROOT, null);
+    }
 
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-        boolean isAdded = false;
-        if (parentName == null) {
-            rootElements.add(
-                    new SimpleMenuItem(childName, actionDelegate)
-            );
+        boolean isAdded;
+        if (Menu.ROOT.equals(parentName)) {
+            rootMenuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
             isAdded = true;
         } else {
             Optional<ItemInfo> rootInfo = findItem(parentName);
@@ -22,9 +24,7 @@ public class SimpleMenu implements Menu {
                 rootInfo.get()
                         .menuItem
                         .getChildren()
-                        .add(
-                                new SimpleMenuItem(childName, actionDelegate)
-                        );
+                        .add(new SimpleMenuItem(childName, actionDelegate));
                 isAdded = true;
             }
         }
@@ -33,9 +33,16 @@ public class SimpleMenu implements Menu {
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        return findItem(itemName).map(itemInfo ->
-                new Menu.MenuItemInfo(itemInfo.menuItem, itemInfo.number)
-        );
+        Optional<MenuItemInfo> select;
+        if (itemName == null) {
+            select = Optional.empty();
+        }
+        if (Menu.ROOT.equals(itemName)) {
+            select = Optional.of(new MenuItemInfo(rootMenuItem, ""));
+        } else {
+            select = findItem(itemName).map(itemInfo -> new MenuItemInfo(itemInfo.menuItem, itemInfo.number));
+        }
+        return select;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class SimpleMenu implements Menu {
             @Override
             public MenuItemInfo next() {
                 ItemInfo next = dfsIterator.next();
-                return new Menu.MenuItemInfo(next.menuItem, next.number);
+                return new MenuItemInfo(next.menuItem, next.number);
             }
         };
     }
@@ -106,7 +113,7 @@ public class SimpleMenu implements Menu {
 
         DFSIterator() {
             int number = 1;
-            for (MenuItem item : rootElements) {
+            for (MenuItem item : rootMenuItem.getChildren()) {
                 stack.addLast(item);
                 numbers.addLast(String.valueOf(number++).concat("."));
             }
