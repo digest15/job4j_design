@@ -3,6 +3,7 @@ package ru.job4j.arhitecture.isp.menu;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -42,5 +43,38 @@ class SimpleMenuTest {
                 menu.select("Покормить собаку").get()
         );
         menu.forEach(i -> System.out.println(i.getNumber() + i.getName()));
+    }
+
+    @Test
+    public void whenSelectRoot() {
+        Menu menu = new SimpleMenu();
+
+        Menu.MenuItemInfo expected = new Menu.MenuItemInfo(Menu.ROOT, List.of(), null, "");
+        assertThat(menu.select(Menu.ROOT).get()).isEqualTo(expected);
+
+        String menuName = "Сходить в магазин";
+        menu.add(Menu.ROOT, menuName, STUB_ACTION);
+        Menu.MenuItemInfo expected1 = new Menu.MenuItemInfo(Menu.ROOT, List.of(menuName), null, "");
+        assertThat(menu.select(Menu.ROOT).get()).isEqualTo(expected1);
+    }
+
+    @Test
+    public void whenSelectNull() {
+        Menu menu = new SimpleMenu();
+        String menuName = "Сходить в магазин";
+        menu.add(Menu.ROOT, menuName, STUB_ACTION);
+        assertThat(menu.select(null)).isEqualTo(Optional.empty());
+    }
+
+    @Test
+    public void whenSelectMenuWhichIsNot() {
+        Menu menu = new SimpleMenu();
+        String menuName1 = "Сходить в магазин";
+        String menuName2 = "Купить корм";
+
+        assertThat(menu.select(menuName1)).isEqualTo(Optional.empty());
+
+        menu.add(Menu.ROOT, menuName1, STUB_ACTION);
+        assertThat(menu.select(menuName2)).isEqualTo(Optional.empty());
     }
 }
