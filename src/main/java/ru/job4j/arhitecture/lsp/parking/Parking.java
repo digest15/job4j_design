@@ -3,15 +3,39 @@ package ru.job4j.arhitecture.lsp.parking;
 import java.util.Set;
 
 public interface Parking extends Iterable<Parked> {
-    Boolean park(Parked auto);
+    boolean park(Parked auto);
 
-    Boolean unpark(Parked auto);
+    boolean unpark(Parked auto);
 
-    int size();
+    Set<Parked> getMachines();
 
-    Set<Parked> getPark();
+    ParkingInfo getParkingInfo();
 
-    int getLightAvailableSockets();
+    class ParkingInfo {
 
-    int getHighAvailableSockets();
+        private final int parkedMachineCount;
+
+        private final int availableCarSpaceCount;
+
+        private final int availableTruckSpaceCount;
+
+        public ParkingInfo(int parkedMachineCount, int availableCarSpaceCount, int availableTruckSpaceCount) {
+            this.parkedMachineCount = parkedMachineCount;
+            this.availableCarSpaceCount = availableCarSpaceCount;
+            this.availableTruckSpaceCount = availableTruckSpaceCount;
+        }
+
+        public int getParkedMachineCount() {
+            return parkedMachineCount;
+        }
+
+        public int getAvailableCarSpaceCount() {
+            return availableCarSpaceCount;
+        }
+
+        public int getAvailableTruckSpaceCount() {
+            return availableTruckSpaceCount;
+        }
+
+    }
 }
