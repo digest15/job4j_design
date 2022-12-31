@@ -34,4 +34,23 @@ class FoodControlQualityTest {
         assertThat(warehouse.size()).isEqualTo(0);
         assertThat(trash.size()).isEqualTo(1);
     }
+
+    @Test
+    public void whenReSort() {
+        Store<Food> warehouse = new Warehouse<>();
+        Store<Food> trash = new Trash<>();
+        List<Store<Food>> stores = List.of(warehouse, trash);
+        ControlQuality<Food> controlQuality = new FoodControlQuality();
+        ExpirationCalculator<LocalDate> mockExpirationCalculator = (begin, end, with) -> 0;
+        Food someFood = new Food(mockExpirationCalculator) {
+            @Override
+            public double calculateExpiration(LocalDate forDate) {
+                return 80;
+            }
+        };
+        controlQuality.add(someFood);
+        int countRedistribution = controlQuality.redistribution(stores);
+        int countReSort = controlQuality.reSort(stores);
+        assertThat(countReSort).isEqualTo(countRedistribution);
+    }
 }

@@ -10,4 +10,6 @@ public interface ControlQuality<E extends Expiring> {
     void add(E value);
 
     int redistribution(List<Store<E>> stores);
+
+    int reSort(List<Store<E>> stores);
 }

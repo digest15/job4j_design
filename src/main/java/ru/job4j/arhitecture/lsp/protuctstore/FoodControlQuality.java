@@ -18,12 +18,23 @@ public class FoodControlQuality implements ControlQuality<Food> {
     public int redistribution(List<Store<Food>> stores) {
         int countModifications = 0;
         for (Food food : foods) {
-            for (Store store : stores) {
+            for (Store<Food> store : stores) {
                 if (store.add(food)) {
                     countModifications++;
                 }
             }
         }
         return countModifications;
+    }
+
+    @Override
+    public int reSort(List<Store<Food>> stores) {
+        foods = new ArrayList<>();
+        for (Store<Food> store : stores) {
+            for (Food food : store) {
+                foods.add(food);
+            }
+        }
+        return redistribution(stores);
     }
 }
