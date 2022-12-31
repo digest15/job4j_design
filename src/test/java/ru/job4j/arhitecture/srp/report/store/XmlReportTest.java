@@ -30,7 +30,7 @@ class XmlReportTest {
                         <fired>22:08:1987 05:00</fired>
                         <salary>100.0</salary>
                     </employee>
-                </employees>                                
+                </employees>
                 """;
         assertThat(engine.generate(em -> true)).isEqualTo(expect);
     }
