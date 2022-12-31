@@ -1,4 +1,4 @@
-package ru.job4j.arhitecture.isp.menu;
+package ru.job4j.arhitecture.isp.menu.menu;
 
 import java.util.*;
 

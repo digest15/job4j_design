@@ -1,4 +1,6 @@
-package ru.job4j.arhitecture.isp.menu;
+package ru.job4j.arhitecture.isp.menu.menuprinter;
+
+import ru.job4j.arhitecture.isp.menu.menu.Menu;
 
 import java.util.function.Consumer;
 

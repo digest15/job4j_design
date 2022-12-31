@@ -1,6 +1,9 @@
 package ru.job4j.arhitecture.isp.menu;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.arhitecture.isp.menu.menu.ActionDelegate;
+import ru.job4j.arhitecture.isp.menu.menu.Menu;
+import ru.job4j.arhitecture.isp.menu.menu.SimpleMenu;
 
 import java.util.List;
 import java.util.Optional;

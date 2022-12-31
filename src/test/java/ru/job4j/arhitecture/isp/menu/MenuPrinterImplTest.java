@@ -1,6 +1,11 @@
 package ru.job4j.arhitecture.isp.menu;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.arhitecture.isp.menu.menu.ActionDelegate;
+import ru.job4j.arhitecture.isp.menu.menu.Menu;
+import ru.job4j.arhitecture.isp.menu.menu.SimpleMenu;
+import ru.job4j.arhitecture.isp.menu.menuprinter.MenuPrinter;
+import ru.job4j.arhitecture.isp.menu.menuprinter.MenuPrinterImpl;
 
 import java.util.StringJoiner;
 

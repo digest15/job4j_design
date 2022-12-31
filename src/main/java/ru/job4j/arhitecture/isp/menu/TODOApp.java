@@ -1,6 +1,11 @@
 package ru.job4j.arhitecture.isp.menu;
 
 
+import ru.job4j.arhitecture.isp.menu.menu.Menu;
+import ru.job4j.arhitecture.isp.menu.menu.SimpleMenu;
+import ru.job4j.arhitecture.isp.menu.menuprinter.MenuPrinter;
+import ru.job4j.arhitecture.isp.menu.menuprinter.MenuPrinterImpl;
+
 import java.io.PrintStream;
 import java.util.*;
 
