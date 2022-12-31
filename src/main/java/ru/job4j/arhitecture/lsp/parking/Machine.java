@@ -1,5 +1,5 @@
 package ru.job4j.arhitecture.lsp.parking;
 
-public interface Parked {
+public interface Machine {
     int parkSize();
 }

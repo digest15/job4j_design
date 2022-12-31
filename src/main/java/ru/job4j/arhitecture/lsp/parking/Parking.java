@@ -2,12 +2,12 @@ package ru.job4j.arhitecture.lsp.parking;
 
 import java.util.Set;
 
-public interface Parking extends Iterable<Parked> {
-    boolean park(Parked auto);
+public interface Parking extends Iterable<Machine> {
+    boolean park(Machine auto);
 
-    boolean unpark(Parked auto);
+    boolean unpark(Machine auto);
 
-    Set<Parked> getMachines();
+    Set<Machine> getMachines();
 
     ParkingInfo getParkingInfo();
 

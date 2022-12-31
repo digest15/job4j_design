@@ -5,7 +5,7 @@ import java.util.*;
 public class ParkingImpl implements Parking {
 
     private final EnumMap<SocketType, Integer> socketsMap;
-    private final HashMap<Parked, SocketType> machines;
+    private final HashMap<Machine, SocketType> machines;
 
     public ParkingImpl(int lightSockets, int heavySockets) {
         socketsMap = new EnumMap<>(SocketType.class);
@@ -15,7 +15,7 @@ public class ParkingImpl implements Parking {
     }
 
     @Override
-    public boolean park(Parked auto) {
+    public boolean park(Machine auto) {
         int size = auto.parkSize();
         if (size == 0) {
             throw new IllegalArgumentException("Park size can't be 0, auto: " + auto);
@@ -34,7 +34,7 @@ public class ParkingImpl implements Parking {
     }
 
     @Override
-    public boolean unpark(Parked auto) {
+    public boolean unpark(Machine auto) {
         int parkSize = auto.parkSize();
         if (parkSize == 0) {
             throw new IllegalArgumentException("Park size can't be 0, auto: " + auto);
@@ -64,16 +64,16 @@ public class ParkingImpl implements Parking {
     }
 
     @Override
-    public Iterator<Parked> iterator() {
+    public Iterator<Machine> iterator() {
         return machines.keySet().iterator();
     }
 
     @Override
-    public Set<Parked> getMachines() {
+    public Set<Machine> getMachines() {
         return new HashSet<>(machines.keySet());
     }
 
-    private boolean parkHeavyAuto(Parked auto, int size) {
+    private boolean parkHeavyAuto(Machine auto, int size) {
         boolean isPark;
         int available = socketsMap.get(SocketType.HEAVY);
         if (available > 0) {
@@ -87,7 +87,7 @@ public class ParkingImpl implements Parking {
         return isPark;
     }
 
-    private boolean parkLightAuto(Parked auto, int size) {
+    private boolean parkLightAuto(Machine auto, int size) {
         boolean isPark = false;
         int available = socketsMap.get(SocketType.LIGHT);
         if (available >= size) {

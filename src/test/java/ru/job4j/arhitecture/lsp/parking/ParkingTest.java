@@ -9,96 +9,101 @@ class ParkingTest {
     @Test
     public void whenParkCarAndLightSocketIsAvailable() {
         Parking parking = new ParkingImpl(1, 1);
-        assertThat(parking.park(() -> 1)).isTrue();
+        Machine car = () -> 1;
+        assertThat(parking.park(car)).isTrue();
     }
 
     @Test
     public void whenParkCarAndLightSocketNotAvailable() {
         Parking parking = new ParkingImpl(0, 1);
-        assertThat(parking.park(() -> 1)).isFalse();
+        Machine car = () -> 1;
+        assertThat(parking.park(car)).isFalse();
     }
 
     @Test
     public void whenParkTrackAndHeavySocketIsAvailable() {
         Parking parking = new ParkingImpl(0, 1);
-        assertThat(parking.park(() -> 2)).isTrue();
+        Machine track = () -> 2;
+        assertThat(parking.park(track)).isTrue();
     }
 
     @Test
     public void whenParkTrackAndHeavySocketNotAvailableButLightSocketIsAvailable() {
         Parking parking = new ParkingImpl(2, 0);
-        assertThat(parking.park(() -> 2)).isTrue();
+        Machine track = () -> 2;
+        assertThat(parking.park(track)).isTrue();
     }
 
     @Test
     public void whenParkTrackAndAnySocketsNotAvailable() {
         Parking parking = new ParkingImpl(1, 0);
-        assertThat(parking.park(() -> 2)).isFalse();
+        Machine track = () -> 2;
+        assertThat(parking.park(track)).isFalse();
     }
 
     @Test
     public void whenParkCarItMustReduceLightSocketsCount() {
-        Parked parked = () -> 1;
+        Machine car = () -> 1;
         int startSockets = 2;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(startSockets, 0);
 
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(startSockets);
-        parking.park(parked);
+        parking.park(car);
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(expectedSockets);
     }
 
     @Test
     public void whenParkTrackItMustReduceHighSocketsCount() {
-        Parked parked = () -> 2;
+        Machine track = () -> 2;
         int startSockets = 2;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(0, startSockets);
 
         assertThat(parking.getParkingInfo().getAvailableTruckSpaceCount()).isEqualTo(startSockets);
-        parking.park(parked);
+        parking.park(track);
         assertThat(parking.getParkingInfo().getAvailableTruckSpaceCount()).isEqualTo(expectedSockets);
     }
 
     @Test
     public void whenParkTrackOnLightSocketsItMustReduceLightSocketsCount() {
-        Parked parked = () -> 2;
+        Machine track = () -> 2;
         int startSockets = 3;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(startSockets, 0);
 
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(startSockets);
-        parking.park(parked);
+        parking.park(track);
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(expectedSockets);
     }
 
     @Test
     public void whenUnparkCarInMustIncreaseLightSocketsCount() {
-        Parked parked = () -> 1;
+        Machine car = () -> 1;
         int expectedSockets = 2;
         Parking parking = new ParkingImpl(expectedSockets, 0);
-        parking.park(parked);
-        parking.unpark(parked);
+        parking.park(car);
+        parking.unpark(car);
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(expectedSockets);
     }
 
     @Test
     public void whenUnparkTrackInMustIncreaseHighSocketsCount() {
-        Parked parked = () -> 2;
+        Machine track = () -> 2;
         int expectedSockets = 2;
         Parking parking = new ParkingImpl(0, expectedSockets);
-        parking.park(parked);
-        parking.unpark(parked);
+        parking.park(track);
+        parking.unpark(track);
         assertThat(parking.getParkingInfo().getAvailableTruckSpaceCount()).isEqualTo(expectedSockets);
     }
 
     @Test
     public void whenUnparkTrackFromLightSocketsItMustIncreaseLightSocketsCount() {
-        Parked parked = () -> 2;
+        Machine track = () -> 2;
         int expectedSockets = 3;
         Parking parking = new ParkingImpl(expectedSockets, 0);
-        parking.park(parked);
-        parking.unpark(parked);
+        parking.park(track);
+        parking.unpark(track);
         assertThat(parking.getParkingInfo().getAvailableCarSpaceCount()).isEqualTo(expectedSockets);
     }
 
@@ -108,7 +113,8 @@ class ParkingTest {
         Parking parking = new ParkingImpl(1, expected - 1);
         for (int i = 1; i <= expected; i++) {
             int j = i;
-            parking.park(() -> j);
+            Machine machine = () -> j;
+            parking.park(machine);
         }
         assertThat(parking.getParkingInfo().getParkedMachineCount()).isEqualTo(expected);
         assertThat(parking.getMachines().size()).isEqualTo(expected);
@@ -117,40 +123,42 @@ class ParkingTest {
     @Test
     public void whenParkAndSizeIsZero() {
         Parking parking = new ParkingImpl(1, 1);
-        assertThatThrownBy(() -> parking.park(() -> 0))
+        Machine wrongMachine = () -> 0;
+        assertThatThrownBy(() -> parking.park(wrongMachine))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void whenUnpark() {
-        Parked parked1 = () -> 1;
-        Parked parked2 = () -> 1;
+        Machine car1 = () -> 1;
+        Machine car2 = () -> 1;
         Parking parking = new ParkingImpl(1, 1);
-        parking.park(parked1);
+        parking.park(car1);
 
-        assertThat(parking.unpark(parked1))
+        assertThat(parking.unpark(car1))
                 .isTrue();
-        assertThat(parking.unpark(parked2))
+        assertThat(parking.unpark(car2))
                 .isFalse();
     }
 
     @Test
     public void whenUnparkAndSizeIsZero() {
         Parking parking = new ParkingImpl(1, 1);
-        assertThatThrownBy(() -> parking.unpark(() -> 0))
+        Machine car = () -> 0;
+        assertThatThrownBy(() -> parking.unpark(car))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void whenParkItMustContainsInParkset() {
-        Parked parked1 = () -> 1;
-        Parked parked2 = () -> 1;
+        Machine car1 = () -> 1;
+        Machine car2 = () -> 1;
         Parking parking = new ParkingImpl(1, 1);
-        parking.park(parked1);
+        parking.park(car1);
 
         assertThat(parking.getMachines())
-                .contains(parked1);
+                .contains(car1);
         assertThat(parking.getMachines())
-                .doesNotContain(parked2);
+                .doesNotContain(car2);
     }
 }
