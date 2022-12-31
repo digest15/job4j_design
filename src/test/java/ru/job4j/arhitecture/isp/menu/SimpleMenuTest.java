@@ -80,4 +80,15 @@ class SimpleMenuTest {
         menu.add(Menu.ROOT, menuName1, STUB_ACTION);
         assertThat(menu.select(menuName2)).isEqualTo(Optional.empty());
     }
+
+    @Test
+    public void whenAddSameMenuItem() {
+        Menu menu = new SimpleMenu();
+        String menuName1 = "Сходить в магазин";
+
+        menu.add(Menu.ROOT, menuName1, STUB_ACTION);
+
+        assertThat(menu.add(menuName1, menuName1, STUB_ACTION))
+                .isFalse();
+    }
 }

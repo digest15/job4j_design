@@ -17,15 +17,19 @@ public class SimpleMenu implements Menu {
             rootMenuItem.getChildren().add(new SimpleMenuItem(childName, actionDelegate));
             isAdded = true;
         } else {
-            Optional<ItemInfo> rootInfo = findItem(parentName);
-            if (rootInfo.isEmpty()) {
+            if (findItem(childName).isPresent()) {
                 isAdded = false;
             } else {
-                rootInfo.get()
-                        .menuItem
-                        .getChildren()
-                        .add(new SimpleMenuItem(childName, actionDelegate));
-                isAdded = true;
+                Optional<ItemInfo> rootInfo = findItem(parentName);
+                if (rootInfo.isEmpty()) {
+                    isAdded = false;
+                } else {
+                    rootInfo.get()
+                            .menuItem
+                            .getChildren()
+                            .add(new SimpleMenuItem(childName, actionDelegate));
+                    isAdded = true;
+                }
             }
         }
         return isAdded;
