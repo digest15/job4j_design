@@ -21,12 +21,12 @@ class ItReportTest {
         String delimetr = ";";
         Report engine = new ItReport(store, parser, delimetr);
         StringBuilder expect = new StringBuilder()
-                .append("Name;Hired;Fired;Salary;".replaceAll(";", delimetr))
+                .append("Name;Hired;Fired;Salary".replaceAll(";", delimetr))
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(parser.parse(worker.getHired())).append(";")
                 .append(parser.parse(worker.getFired())).append(";")
-                .append(worker.getSalary()).append(";")
+                .append(worker.getSalary())
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
