@@ -20,7 +20,7 @@ class BoxTest {
     @Test
     void isThisTetrahedron() {
         String type = "Tetrahedron";
-        int vertex = 0;
+        int vertex = 4;
         int edge = 10;
         Box box = new Box(vertex, edge);
         String name = box.whatsThis();
@@ -32,7 +32,7 @@ class BoxTest {
     @Test
     void isThisCube() {
         String type = "Cube";
-        int vertex = 0;
+        int vertex = 8;
         int edge = 10;
         Box box = new Box(vertex, edge);
         String name = box.whatsThis();
