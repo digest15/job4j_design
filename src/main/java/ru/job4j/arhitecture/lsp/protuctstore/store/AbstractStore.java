@@ -5,6 +5,7 @@ import ru.job4j.arhitecture.lsp.protuctstore.entity.Pricing;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class AbstractStore<E extends Expiring & Pricing> implements Store<E> {
 
@@ -30,6 +31,13 @@ public abstract class AbstractStore<E extends Expiring & Pricing> implements Sto
     @Override
     public int size() {
         return storeds.size();
+    }
+
+    @Override
+    public List<E> clear() {
+        ArrayList<E> list = new ArrayList<>(storeds);
+        storeds.clear();
+        return list;
     }
 
     @Override

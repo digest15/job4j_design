@@ -31,9 +31,7 @@ public class FoodControlQuality implements ControlQuality<Food> {
     public int reSort(List<Store<Food>> stores) {
         foods = new ArrayList<>();
         for (Store<Food> store : stores) {
-            for (Food food : store) {
-                foods.add(food);
-            }
+            foods.addAll(store.clear());
         }
         return redistribution(stores);
     }
