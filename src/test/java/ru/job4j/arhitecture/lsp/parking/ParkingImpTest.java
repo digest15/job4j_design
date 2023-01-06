@@ -5,45 +5,45 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class ParkingTest {
+class ParkingImpTest {
     @Test
     public void whenParkCarAndLightSocketIsAvailable() {
         Parking parking = new ParkingImpl(1, 1);
-        Machine car = () -> 1;
+        Machine car = new Car();
         assertThat(parking.park(car)).isTrue();
     }
 
     @Test
     public void whenParkCarAndLightSocketNotAvailable() {
         Parking parking = new ParkingImpl(0, 1);
-        Machine car = () -> 1;
+        Machine car = new Car();
         assertThat(parking.park(car)).isFalse();
     }
 
     @Test
     public void whenParkTrackAndHeavySocketIsAvailable() {
         Parking parking = new ParkingImpl(0, 1);
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         assertThat(parking.park(track)).isTrue();
     }
 
     @Test
     public void whenParkTrackAndHeavySocketNotAvailableButLightSocketIsAvailable() {
         Parking parking = new ParkingImpl(2, 0);
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         assertThat(parking.park(track)).isTrue();
     }
 
     @Test
     public void whenParkTrackAndAnySocketsNotAvailable() {
         Parking parking = new ParkingImpl(1, 0);
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         assertThat(parking.park(track)).isFalse();
     }
 
     @Test
     public void whenParkCarItMustReduceLightSocketsCount() {
-        Machine car = () -> 1;
+        Machine car = new Car();
         int startSockets = 2;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(startSockets, 0);
@@ -55,7 +55,7 @@ class ParkingTest {
 
     @Test
     public void whenParkTrackItMustReduceHighSocketsCount() {
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         int startSockets = 2;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(0, startSockets);
@@ -67,7 +67,7 @@ class ParkingTest {
 
     @Test
     public void whenParkTrackOnLightSocketsItMustReduceLightSocketsCount() {
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         int startSockets = 3;
         int expectedSockets = 1;
         Parking parking = new ParkingImpl(startSockets, 0);
@@ -79,7 +79,7 @@ class ParkingTest {
 
     @Test
     public void whenUnparkCarInMustIncreaseLightSocketsCount() {
-        Machine car = () -> 1;
+        Machine car = new Car();
         int expectedSockets = 2;
         Parking parking = new ParkingImpl(expectedSockets, 0);
         parking.park(car);
@@ -89,7 +89,7 @@ class ParkingTest {
 
     @Test
     public void whenUnparkTrackInMustIncreaseHighSocketsCount() {
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         int expectedSockets = 2;
         Parking parking = new ParkingImpl(0, expectedSockets);
         parking.park(track);
@@ -99,7 +99,7 @@ class ParkingTest {
 
     @Test
     public void whenUnparkTrackFromLightSocketsItMustIncreaseLightSocketsCount() {
-        Machine track = () -> 2;
+        Machine track = new Truck(2);
         int expectedSockets = 3;
         Parking parking = new ParkingImpl(expectedSockets, 0);
         parking.park(track);
@@ -130,8 +130,8 @@ class ParkingTest {
 
     @Test
     public void whenUnpark() {
-        Machine car1 = () -> 1;
-        Machine car2 = () -> 1;
+        Machine car1 = new Car();
+        Machine car2 = new Car();
         Parking parking = new ParkingImpl(1, 1);
         parking.park(car1);
 
@@ -151,8 +151,8 @@ class ParkingTest {
 
     @Test
     public void whenParkItMustContainsInParkset() {
-        Machine car1 = () -> 1;
-        Machine car2 = () -> 1;
+        Machine car1 = new Car();
+        Machine car2 = new Car();
         Parking parking = new ParkingImpl(1, 1);
         parking.park(car1);
 
