@@ -1,6 +1,7 @@
 package ru.job4j.arhitecture.isp.menu;
 
 
+import ru.job4j.arhitecture.isp.menu.menu.ActionDelegate;
 import ru.job4j.arhitecture.isp.menu.menu.Menu;
 import ru.job4j.arhitecture.isp.menu.menu.SimpleMenu;
 import ru.job4j.arhitecture.isp.menu.menuprinter.MenuPrinter;
@@ -10,6 +11,9 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class TODOApp {
+
+    private static final ActionDelegate STUB_ACTION = System.out::println;
+
     private final Set<String> tasks = new HashSet<>();
 
     private final Scanner scanner;
@@ -47,6 +51,8 @@ public class TODOApp {
         menu.add(Menu.ROOT, "Удалить задачу", this::removeTask);
         menu.add(Menu.ROOT, "Показать все задачи", this::listTasks);
         menu.add(Menu.ROOT, "Закрыть приложение", () -> run = false);
+        menu.add(Menu.ROOT, "Добавить пункт меню", this::addMenu);
+        menu.add(Menu.ROOT, "Добавить пункт меню в корень", this::addRootMenu);
         return menu;
     }
 
@@ -66,5 +72,27 @@ public class TODOApp {
         StringJoiner sj = new StringJoiner(System.lineSeparator());
         tasks.forEach(sj::add);
         printStream.println(sj.toString());
+    }
+
+    private void addRootMenu() {
+        addMenuItem(Menu.ROOT);
+    }
+
+    private void addMenu() {
+        printStream.println("Выберите родительский пункт:");
+        String root = scanner.nextLine();
+        menu.select(root).ifPresentOrElse(
+                item -> addMenuItem(item.getName()),
+                () -> printStream.println("Такой пункт меню не найден!")
+        );
+    }
+
+    private void addMenuItem(String parent) {
+        printStream.println("Введите название пункта меню:");
+        String name = scanner.nextLine();
+        boolean isAdded = menu.add(parent, name, STUB_ACTION);
+        if (isAdded) {
+            printStream.println("Элемент успешно добавлен!");
+        }
     }
 }
