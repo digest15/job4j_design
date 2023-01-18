@@ -4,13 +4,13 @@ import java.util.*;
 
 public class ParkingImpl implements Parking {
 
-    private final EnumMap<SocketType, Integer> socketsMap;
-    private final HashMap<Machine, SocketType> machines;
+    private final EnumMap<MachineType, Integer> socketsMap;
+    private final HashMap<Machine, MachineType> machines;
 
     public ParkingImpl(int lightSockets, int heavySockets) {
-        socketsMap = new EnumMap<>(SocketType.class);
-        socketsMap.put(SocketType.LIGHT, lightSockets);
-        socketsMap.put(SocketType.HEAVY, heavySockets);
+        socketsMap = new EnumMap<>(MachineType.class);
+        socketsMap.put(MachineType.LIGHT, lightSockets);
+        socketsMap.put(MachineType.HEAVY, heavySockets);
         machines = new HashMap<>();
     }
 
@@ -24,7 +24,7 @@ public class ParkingImpl implements Parking {
         boolean isPark = false;
 
         if (!machines.containsKey(auto)) {
-            if (size == 1) {
+            if (size == Car.SIZE) {
                 isPark = parkLightAuto(auto, size);
             } else {
                 isPark = parkHeavyAuto(auto, size);
@@ -40,13 +40,13 @@ public class ParkingImpl implements Parking {
             throw new IllegalArgumentException("Park size can't be 0, auto: " + auto);
         }
 
-        SocketType removeType = machines.remove(auto);
+        MachineType removeType = machines.remove(auto);
         boolean isUnpark = removeType != null;
         if (isUnpark) {
             int count = socketsMap.get(removeType);
-            if (parkSize == 1 || SocketType.HEAVY.equals(removeType)) {
+            if (parkSize == Car.SIZE || MachineType.HEAVY.equals(removeType)) {
                 count++;
-            } else if (SocketType.LIGHT.equals(removeType)) {
+            } else if (MachineType.LIGHT.equals(removeType)) {
                 count = count + parkSize;
             }
             socketsMap.put(removeType, count);
@@ -58,8 +58,8 @@ public class ParkingImpl implements Parking {
     public ParkingInfo getParkingInfo() {
         return new ParkingInfo(
                 machines.size(),
-                socketsMap.get(SocketType.LIGHT),
-                socketsMap.get(SocketType.HEAVY)
+                socketsMap.get(MachineType.LIGHT),
+                socketsMap.get(MachineType.HEAVY)
         );
     }
 
@@ -75,11 +75,11 @@ public class ParkingImpl implements Parking {
 
     private boolean parkHeavyAuto(Machine auto, int size) {
         boolean isPark;
-        int available = socketsMap.get(SocketType.HEAVY);
+        int available = socketsMap.get(MachineType.HEAVY);
         if (available > 0) {
-            machines.put(auto, SocketType.HEAVY);
+            machines.put(auto, MachineType.HEAVY);
             available--;
-            socketsMap.put(SocketType.HEAVY, available);
+            socketsMap.put(MachineType.HEAVY, available);
             isPark = true;
         } else {
             isPark = parkLightAuto(auto, size);
@@ -89,16 +89,16 @@ public class ParkingImpl implements Parking {
 
     private boolean parkLightAuto(Machine auto, int size) {
         boolean isPark = false;
-        int available = socketsMap.get(SocketType.LIGHT);
+        int available = socketsMap.get(MachineType.LIGHT);
         if (available >= size) {
-            machines.put(auto, SocketType.LIGHT);
+            machines.put(auto, MachineType.LIGHT);
             available = available - size;
-            socketsMap.put(SocketType.LIGHT, available);
+            socketsMap.put(MachineType.LIGHT, available);
             isPark = true;
         }
         return isPark;
     }
 
-    private enum SocketType { LIGHT, HEAVY }
+    private enum MachineType { LIGHT, HEAVY }
 
 }
